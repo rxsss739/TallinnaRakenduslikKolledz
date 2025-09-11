@@ -20,21 +20,11 @@ namespace TallinnaRakenduslikKolledz.Controllers
             return View(await _context.Students.ToListAsync());
         }
 
-        /// <summary>
-        /// Get create view for student
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
-
-        /// <summary>
-        /// Get create view for students
-        /// </summary>
-        /// <param name="student"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind
@@ -50,12 +40,7 @@ namespace TallinnaRakenduslikKolledz.Controllers
 
             return View(student);
         }
-        
-        /// <summary>
-        /// Get delete view for student
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -71,11 +56,6 @@ namespace TallinnaRakenduslikKolledz.Controllers
             }
             return View(student);
         }
-        /// <summary>
-        /// Delete student from db
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -84,15 +64,6 @@ namespace TallinnaRakenduslikKolledz.Controllers
             _context.Students.Remove(student);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
-            var student = await _context.Students.FirstOrDefaultAsync(m => m.Id == id);
-
-            return View(student);
-
         }
     }
 }
