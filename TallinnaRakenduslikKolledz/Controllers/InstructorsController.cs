@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TallinnaRakenduslikKolledz.Data;
 using TallinnaRakenduslikKolledz.Models;
@@ -12,6 +13,13 @@ namespace TallinnaRakenduslikKolledz.Controllers
         {
             _context = context;
         }
+
+        /// <summary>
+        /// Get index, async
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(int? id, int? courseId)
         {
             var vm = new InstructorIndexData();
@@ -20,6 +28,62 @@ namespace TallinnaRakenduslikKolledz.Controllers
                 .Include(i => i.CourseAssignments)
                 .ToListAsync();
             return View(vm);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var instructor = new Instructor();
+            instructor.CourseAssignments = new List<CourseAssignment>();
+            return View(instructor);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Instructor instructor, string selectedCourses)
+        {
+            if (selectedCourses == null)
+            {
+                instructor.CourseAssignments = new List<CourseAssignment>();
+                foreach (var course in selectedCourses)
+                {
+                    var courseToAdd = new CourseAssignment
+                    {
+                        InstructorID = instructor.ID,
+                        CourseID = course
+                    };
+                    instructor.CourseAssignments.Add(courseToAdd);
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                _context.Add(instructor);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            PopulateAssignedCourseData(instructor);
+            return View(instructor);
+        }
+        private void PopulateAssignedCourseData(Instructor instructor)
+        {
+            var allCourses = _context.Courses; // leiame kõik kursused
+            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseID));
+            // valime kursused kus courseid on õpetajal olemas
+            var vm = new List<AssignedCourseData>();
+            foreach (var course in allCourses)
+            {
+                vm.Add(new AssignedCourseData
+                {
+                    CourseID = course.CourseId,
+                    Title = course.Title,
+                    Assigned = instructorCourses.Contains(course.CourseId)
+                });
+            }
+            ViewData["Courses"] = vm;
         }
     }
 }

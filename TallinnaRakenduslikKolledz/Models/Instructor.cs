@@ -32,7 +32,7 @@ namespace TallinnaRakenduslikKolledz.Models
         public ICollection<CourseAssignment>? CourseAssignments { get; set; }
         public OfficeAssignment? OfficeAssignment { get; set; }
 
-        /*kolm omadust yahhooooooooo*/
+        /*kolm omadust*/
         [Required]
         [Display(Name = "Palk")]
         public int Salary { get; set; }
