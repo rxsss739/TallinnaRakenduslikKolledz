@@ -115,5 +115,33 @@ namespace TallinnaRakenduslikKolledz.Controllers
             }
             ViewData["Courses"] = vm;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.ID == id);
+            return View(instructor);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.ID == id);
+            return View(instructor);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditConfirmed([Bind("ID,FirstName,LastName,HireDate,Age,Salary,Gender,OfficeAssignment,CourseAssignments")] Instructor instructor)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Instructors.Update(instructor);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
