@@ -32,7 +32,7 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Budget,StartDate,RowVersion,InstructorID,IsActive,EndDate,PhoneNumber")] Department department)
         {
-
+            ViewData["action"] = "Create";
             department.StartDate = DateTime.Now;
             if (ModelState.IsValid)
             {
@@ -83,6 +83,28 @@ namespace TallinnaRakenduslikKolledz.Controllers
 
             var department = await _context.Departments.FirstOrDefaultAsync(d => d.DepartmentID == id);
             return View(nameof(Delete), department);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            ViewData["action"] = "Edit";
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.DepartmentID == id);
+            return View(nameof(Create), department);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditConfirmed([Bind("DepartmentID,Name,Budget,StartDate,InstructorID,Administrator,Courses,RowVersion,IsActive,PhoneNumber,EndDate")] Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Departments.Update(department);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
