@@ -24,9 +24,12 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewData["action"] = "Create";
             ViewData["InstructorID"] = new SelectList(_context.Instructors, "Id", "FullName");
             return View();
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
