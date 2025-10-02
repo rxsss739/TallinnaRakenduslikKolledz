@@ -31,15 +31,10 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Course course)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
-                PopulateDepartmentsDropDownList(course.DepartmentID);
-                return RedirectToAction("Index");
-            }
-
-            return NotFound();
+            _context.Courses.Add(course);
+            await _context.SaveChangesAsync();
+            PopulateDepartmentsDropDownList(course.DepartmentID);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
