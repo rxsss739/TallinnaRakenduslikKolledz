@@ -23,7 +23,7 @@ namespace TallinnaRakenduslikKolledz.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(int id)
+        public IActionResult Create()
         {
             PopulateDepartmentsDropDownList();
             return View();
@@ -40,6 +40,8 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag["action"] = "Delete";
+
             if (id == null || _context.Courses == null) { return NotFound(); }
 
             var courses = await _context.Courses
@@ -55,7 +57,10 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        {   
+
+            ViewBag["action"] = "Delete";
+
             if (_context.Courses == null) { return NotFound(); }
 
             var course = await _context.Courses.FindAsync(id);
@@ -64,6 +69,16 @@ namespace TallinnaRakenduslikKolledz.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            ViewData["action"] = "Details";
+            if (id == null) { return NotFound(); }
+
+            var course = await _context.Courses.FirstOrDefaultAsync(d => d.CourseId == id);
+            return View(nameof(Delete), course);
         }
 
         private void PopulateDepartmentsDropDownList(object selectedDepartment = null)
