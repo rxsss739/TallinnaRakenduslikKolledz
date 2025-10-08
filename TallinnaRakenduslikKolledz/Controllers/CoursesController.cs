@@ -89,6 +89,26 @@ namespace TallinnaRakenduslikKolledz.Controllers
             ViewBag.DepartmentID = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentID", "Name", selectedDepartment);
         }
 
-        
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            ViewData["action"] = "Edit";
+            var course = await _context.Courses.FirstOrDefaultAsync(d => d.CourseId == id);
+            return View(nameof(Create), course);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditConfirmed([Bind("CourseId,Title,Credits,Enrollments,Department,DepartmentID,CourseAssignments")] Course course)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Courses.Update(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
