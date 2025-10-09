@@ -29,7 +29,7 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("DelinquentId,FirstName,LastName,Violation,TeacherOrStudent,Situation")] Delinquent delinquent)
-        {   
+        {
             if (ModelState.IsValid)
             {
                 _context.Delinquents.Add(delinquent);
@@ -71,6 +71,27 @@ namespace TallinnaRakenduslikKolledz.Controllers
             }
 
             return View(delinquent);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var delinquent = await _context.Delinquents.FirstOrDefaultAsync(x => x.DelinquentId == id);
+            return View(delinquent);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var delinquent = await _context.Delinquents.FirstOrDefaultAsync(x => x.DelinquentId == id);
+                _context.Delinquents.Remove(delinquent);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
         }
     }
 }

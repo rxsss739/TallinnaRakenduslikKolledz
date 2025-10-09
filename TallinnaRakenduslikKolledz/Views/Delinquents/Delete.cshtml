@@ -1,0 +1,37 @@
+﻿@model TallinnaRakenduslikKolledz.Models.Delinquent
+
+@{
+	ViewData["Title"] = $"Delinquent {Model.FirstName} {Model.LastName}";
+}
+
+<h1>Kas tahad kustuta korrarikkuja: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
+<hr />
+
+<div>
+	<dl class="row">
+		<dt class="col-sm-2">@Html.DisplayNameFor(model => model.FirstName)</dt>
+		<dd class="col-sm-10">@Html.DisplayFor(model => model.FirstName)</dd>
+	</dl>
+	<dl class="row">
+		<dt class="col-sm-2">@Html.DisplayNameFor(model => model.LastName)</dt>
+		<dd class="col-sm-10">@Html.DisplayFor(model => model.LastName)</dd>
+	</dl>
+	<dl class="row">
+		<dt class="col-sm-2">@Html.DisplayNameFor(model => model.Violation)</dt>
+		<dd class="col-sm-10">@Html.DisplayFor(model => model.Violation)</dd>
+	</dl>
+	<dl class="row">
+		<dt class="col-sm-2">@Html.DisplayNameFor(model => model.Situation)</dt>
+		<dd class="col-sm-10">@Html.DisplayFor(model => model.Situation)</dd>
+	</dl>
+	<dl class="row">
+		<dt class="col-sm-2">@Html.DisplayNameFor(model => model.TeacherOrStudent)</dt>
+		<dd class="col-sm-10">@Html.DisplayFor(model => model.TeacherOrStudent)</dd>
+	</dl>
+
+	<hr />
+	<form asp-action="Delete">
+		<input type="hidden" asp-for="DelinquentId"/>
+		<input type="submit" value="Kustuta" class="btn btn-danger"/> | <a asp-action="Index">Tagasi loendisse</a>
+	</form>
+</div>
