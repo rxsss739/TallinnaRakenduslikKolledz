@@ -17,8 +17,8 @@ namespace TallinnaRakenduslikKolledz.Models
         public int DelinquentId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Violations Violation { get; set; }
-        public bool IsTeacher { get; set; } // false = student
+        public Violations? Violation { get; set; }
+        public string TeacherOrStudent { get; set; }
         public string Situation { get; set; }
     }
 }
