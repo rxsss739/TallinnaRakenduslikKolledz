@@ -3,8 +3,14 @@
 @{
 	ViewData["Title"] = "Osakond";
 }
-
-<h2>Asuta uus osakond</h2>
+@if (ViewBag.action == "Create")
+{
+	<h2>Asuta uus osakond</h2>
+}
+else
+{
+	<h2>Muuda osakonda</h2>
+}
 <hr />
 <div class="row">
 	<div class="col-md-4">
