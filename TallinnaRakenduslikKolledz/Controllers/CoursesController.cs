@@ -25,6 +25,7 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewData["action"] = "Create";
             PopulateDepartmentsDropDownList();
             return View();
         }
@@ -40,7 +41,7 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            ViewBag["action"] = "Delete";
+            ViewData["action"] = "Delete";
 
             if (id == null || _context.Courses == null) { return NotFound(); }
 
@@ -58,8 +59,6 @@ namespace TallinnaRakenduslikKolledz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {   
-
-            ViewBag["action"] = "Delete";
 
             if (_context.Courses == null) { return NotFound(); }
 
